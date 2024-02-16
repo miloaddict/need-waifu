@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>want waifu?</title>
-
     <!-- favicon -->
     <script>
         var favicon = document.createElement('link')
@@ -20,15 +19,30 @@
 
         document.head.appendChild(favicon)
     </script>
+    <!-- title -->
+    <script>
+        var titles = ["need waifu?", "waifu need?"]
+        var index = 0
+
+        function changetitle() {
+            document.title = titles[index]
+            index = (index + 1) % titles.length
+        }
+
+        changetitle()
+
+        setInterval(changetitle, 2000)
+    </script>
 </head>
 <body style="background-color: black; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow-y: hidden;">
     <div style="display: flex; flex-direction: column; max-width: 400px; align-items: center; justify-content: center;">
-        <div>need waifu?</div>
+        <div id="title">need waifu?</div>
         <img id="waifu" style="max-width: 400px; width: 90vw;">
         <div>
             <input type="checkbox" id="nsfw"> nsfw
         </div>
         <select id="select"></select>
+        <button onclick="imgfetch()" id="again" style="display: none; margin: 5px;">again!</button>
     </div>
     <script>
         const waifu = document.getElementById("waifu")
@@ -49,26 +63,37 @@
                 option.textContent = index;
                 select.appendChild(option);
             })
+            imgfetch()
+        }
+        function imgfetch(){
+            const title = document.getElementById("title")
+            const again = document.getElementById("again")
+            title.innerHTML = "loading..."
+            again.style.display = "none"
             if(nsfw.checked){
                 fetch(`https://api.waifu.pics/nsfw/${select.value}`)
                     .then(response => response.json())
                     .then(image =>  {
                         waifu.src = image.url
-                })
+                    })
             }
             else{
                 fetch(`https://api.waifu.pics/sfw/${select.value}`)
                     .then(response => response.json())
                     .then(image =>  {
                         waifu.src = image.url
-                })
+                    })
+            }
+            waifu.onload = function() {
+                title.innerHTML = "need waifu?"
+                again.style.display = "block"
             }
         }
         selectlist()
         nsfw.addEventListener('change', ()=>{
             selectlist()
         })
-        select.addEventListener('change', selectlist)
+        select.addEventListener('change', imgfetch)
     </script>
 </body>
 </html>

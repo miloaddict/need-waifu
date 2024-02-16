@@ -21,13 +21,15 @@
         document.head.appendChild(favicon)
     </script>
 </head>
-<body style="background-color: black; color: white;">
-    <div>need waifu?</div>
-    <img id="waifu">
-    <div>
-        <input type="checkbox" id="nsfw"> nsfw
+<body style="background-color: black; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow-y: hidden;">
+    <div style="display: flex; flex-direction: column; max-width: 400px; align-items: center; justify-content: center;">
+        <div>need waifu?</div>
+        <img id="waifu" style="max-width: 400px; width: 90vw;">
+        <div>
+            <input type="checkbox" id="nsfw"> nsfw
+        </div>
+        <select id="select"></select>
     </div>
-    <select id="select"></select>
     <script>
         const waifu = document.getElementById("waifu")
         const nsfw = document.getElementById("nsfw")

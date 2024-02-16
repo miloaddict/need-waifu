@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>want waifu?</title>
+
+    <!-- favicon -->
+    <script>
+        var favicon = document.createElement('link')
+
+        favicon.rel = 'icon'
+        favicon.type = 'image/png'
+
+        fetch(`https://api.waifu.pics/sfw/waifu`)
+		.then(response => response.json())
+		.then(image =>  {
+			favicon.href = image.url
+        })
+
+        document.head.appendChild(favicon)
+    </script>
+</head>
+<body style="background-color: black; color: white;">
+    <div>need waifu?</div>
+    <img id="waifu">
+    <div>
+        <input type="checkbox" id="nsfw"> nsfw
+    </div>
+    <select id="select"></select>
+    <script>
+        const waifu = document.getElementById("waifu")
+        const nsfw = document.getElementById("nsfw")
+        const select = document.getElementById("select")
+        var list = []
+        function selectlist(){
+            if(nsfw.checked){
+                list=["waifu","neko","trap","blowjob"]
+            }
+            else{
+                list=["waifu","neko","shinobu","megumin","bully","cuddle","cry","hug","awoo","kiss","lick","pat","smug","bonk","yeet","blush","smile","wave","highfive","handhold","nom","bite","glomp","slap","kill","kick","happy","wink","poke","dance","cringe"]
+            }
+            select.innerHTML=""
+            list.forEach((index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = index;
+                select.appendChild(option);
+            })
+            if(nsfw.checked){
+                fetch(`https://api.waifu.pics/nsfw/${select.value}`)
+                    .then(response => response.json())
+                    .then(image =>  {
+                        waifu.src = image.url
+                })
+            }
+            else{
+                fetch(`https://api.waifu.pics/sfw/${select.value}`)
+                    .then(response => response.json())
+                    .then(image =>  {
+                        waifu.src = image.url
+                })
+            }
+        }
+        selectlist()
+        nsfw.addEventListener('change', ()=>{
+            selectlist()
+        })
+        select.addEventListener('change', selectlist)
+    </script>
+</body>
+</html>
